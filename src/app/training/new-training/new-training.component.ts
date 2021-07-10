@@ -21,5 +21,6 @@ export class NewTrainingComponent implements OnInit {
 
   onStartTraining() {
     this.startTraining.emit()
+    
   }
 }
