@@ -1,21 +1,23 @@
 <section class="new-training" fxLayout fxLayoutAlign="center center">
-    <mat-card fxFlex.xs="100%" fxFlex="400px">
-        <mat-card-title fxLayout fxLayoutAlign="center center">
-            Time to start a Workout !
-        </mat-card-title>
-        <mat-card-content fxLayout fxLayoutAlign="center center">
-            <mat-form-field fxLayout fxLayoutAlign="center center">
-                <mat-label>Training Type</mat-label>
-                <mat-select placeholder="Selct Type Of training !">
-                  <mat-option value="crunches" *ngFor="let exercise of exercises" [value]="exercise.id">
-                      {{exercise.name}}
-                  </mat-option>
-                  
-                </mat-select>
-              </mat-form-field>
-        </mat-card-content>
-        <mat-card-actions fxLayout fxLayoutAlign="center center" >
-            <button mat-button type="submit" color="primary" (click)="onStartTraining()"> Start</button>
-        </mat-card-actions>
-    </mat-card>
+    <form (ngSubmit)="onStartTraining(f)" #f="ngForm">
+        <mat-card fxFlex.xs="100%" fxFlex="400px">
+            <mat-card-title fxLayout fxLayoutAlign="center center">
+                Time to start a Workout !
+            </mat-card-title>
+            <mat-card-content fxLayout fxLayoutAlign="center center">
+                <mat-form-field fxLayout fxLayoutAlign="center center">
+                    <mat-label>Training Type</mat-label>
+                    <mat-select placeholder="Selct Type Of training !" required ngModel name="exersice">
+                      <mat-option value="crunches" *ngFor="let exercise of exercises" [value]="exercise.id" >
+                          {{exercise.name}}
+                      </mat-option>
+                      
+                    </mat-select>
+                  </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions fxLayout fxLayoutAlign="center center" >
+                <button mat-button type="submit" color="primary" [disabled]="f.invalid"> Start</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
 </section>
