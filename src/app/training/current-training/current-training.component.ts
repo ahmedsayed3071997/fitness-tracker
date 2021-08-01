@@ -17,6 +17,7 @@ export class CurrentTrainingComponent implements OnInit {
   ngOnInit(): void {
     this.startOrResumeTimer()  
   }
+  
   startOrResumeTimer() {
     const step = this.trainingService.getRuningExersice().duration / 100 *1000 
     this.timer = setInterval(() => {
@@ -27,6 +28,7 @@ export class CurrentTrainingComponent implements OnInit {
       }
      },step)
   }
+
   onStop() {
     clearInterval(this.timer);
    const dialogref =  this.dialog.open(StopTrainingComponent, {
@@ -37,7 +39,8 @@ export class CurrentTrainingComponent implements OnInit {
     dialogref.afterClosed().subscribe(
       (result) => {
         if (result === true) {
-          this.trainingService.cancelExercise(this.progress)
+          this.trainingService.cancelExercise(this.progress);
+          
         } else {
           this.startOrResumeTimer()
         }
