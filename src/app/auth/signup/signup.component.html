@@ -62,9 +62,11 @@
             Agree To Terms and Condtions
         </mat-checkbox>
         <button 
+            *ngIf="!isLoading"
             type="submit" 
             mat-raised-button 
             color="primary"
             [disabled]="f.invalid">Submit</button>
+            <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" color="primary"></mat-progress-spinner>
     </form>
 </section>
