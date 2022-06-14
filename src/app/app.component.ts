@@ -9,10 +9,13 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   openSidenav = false;
   title = 'fitness-tracker';
+
   constructor(private authService:AuthService) { }
   
   ngOnInit() {
     this.authService.initAuthListner();
-
+   
   }
+
+
 }

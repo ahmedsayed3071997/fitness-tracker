@@ -2,9 +2,11 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
+import * as fromTraining from '../training.reducer';
 
 @Component({
   selector: 'app-past-trainings',
@@ -18,16 +20,18 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @ViewChild(MatSort) sort:MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
-  sub: Subscription;
   
-
-  constructor(private trainingService:TrainingService) { }
+  constructor(private trainingService:TrainingService, private store:Store) { }
 
   ngOnInit(): void {
     this.trainingService.fetchCompletedOrCancelledExercises();
-    this.sub = this.trainingService.finishedExericsesChanged.subscribe((exercises: Exercise[]) => { 
-      exercises.map(ex=> ex.date = (ex.date as any).toDate().toDateString());
-      this.dataSource.data = exercises  
+    this.store.select(fromTraining.getFinishedExercises).subscribe((exercises: Exercise[]) => { 
+      // exercises.map(ex=> ex.date = (ex?.date as any).toDate().toDateString());
+      this.dataSource.data = exercises.map(ex => {
+        let obj: any = { ...ex };
+        obj.dateString = (ex.date as any).toDate().toDateString()
+        return obj;
+      });
     })
   }
 
@@ -40,8 +44,6 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit, OnDestroy 
     this.dataSource.filter = filterValue.value.trim().toLowerCase();
   }
   ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    
   }
 }

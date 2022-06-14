@@ -10,7 +10,8 @@ export const environment = {
     projectId: "fitness-tracker-50a04",
     storageBucket: "fitness-tracker-50a04.appspot.com",
     messagingSenderId: "645880568562",
-    appId: "1:645880568562:web:44485062bf986ed2f1ce6b"
+    appId: "1:645880568562:web:44485062bf986ed2f1ce6b",
+    vapidKey: "BCKbGNtsTaDzTgrJLjT7xUC2Wm91yqW-iMfb96psNPEkgGAwTNNt6flZeTJoWPD9e5C2Y2l2nezru5drQ6HTpLo"
   }
 };
 

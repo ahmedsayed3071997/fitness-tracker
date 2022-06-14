@@ -2,10 +2,11 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { NgForm } from '@angular/forms';
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { UiServiceService } from 'src/app/shared/ui-service.service';
+import { Store } from '@ngrx/store';
+import * as fromTraining from '../training.reducer';
+import * as fromRoot from '../../app.reducer';
 
 @Component({
   selector: 'app-new-training',
@@ -16,32 +17,20 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
  
   @Output() startTraining = new EventEmitter<void>();
 
-  exercises: Exercise[];
-  isLoading: boolean = false;
-  exercisesSub: Subscription;
-  loadingSub: Subscription;
+  exercises$: Observable<Exercise[]>;
+  isLoading$:Observable<boolean> ;
 
-  constructor(public trainingService:TrainingService, private uiService:UiServiceService) { }
+  constructor(public trainingService:TrainingService, private uiService:UiServiceService, private store:Store<fromTraining.State>) { }
 
   ngOnInit(): void {
-    // this.exercises = this.db.collection('availableExercises').snapshotChanges() as Observable<Exercise[]>;
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.trainingService.fetchAvailableExercises();
-    this.exercisesSub = this.trainingService.exericsesChanged.subscribe(exercises => { 
-      this.exercises = exercises
-    })
-    // this.exercises = this.trainingService.exericsesChanged;
-    this.loadingSub = this.uiService.loadingStateChanged.subscribe(isLoading => { this.isLoading = isLoading });
+    this.exercises$ = this.store.select(fromTraining.getAvailableExercises);
   }
 
   onStartTraining(form:NgForm) {
     this.trainingService.startExercise(form.value.exersice);
   }
   ngOnDestroy(): void {
-    if (this.exercisesSub) { 
-      this.exercisesSub.unsubscribe();
-    }
-    if (this.loadingSub) { 
-      this.loadingSub.unsubscribe();
-    }
   }
 }
