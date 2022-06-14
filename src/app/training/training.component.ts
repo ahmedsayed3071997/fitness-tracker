@@ -33,7 +33,7 @@ export class TrainingComponent implements OnInit, OnDestroy {
 
 
   requestPermission() {
-    const messaging = firebase.default.messaging();
+    const messaging = firebase.messaging();
     messaging.getToken(
       { vapidKey: environment.firebase.vapidKey}).then(
        (currentToken) => {
@@ -49,7 +49,7 @@ export class TrainingComponent implements OnInit, OnDestroy {
   }
 
   listen() {
-    const messaging = firebase.default.messaging();
+    const messaging = firebase.messaging();
     messaging.onMessage((payload) => {
       console.log('Message received. ', payload);
       this.message = payload;
